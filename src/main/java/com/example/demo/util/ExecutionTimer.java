@@ -17,9 +17,9 @@ public class ExecutionTimer {
   public Object executionTime(ProceedingJoinPoint point) throws Throwable {
     long startTime = System.currentTimeMillis();
     Object object = point.proceed();
-    long endtime = System.currentTimeMillis();
+    long endTime = System.currentTimeMillis();
     log.info("Class Name: " + point.getSignature().getDeclaringTypeName() + ". Method Name: " + point.getSignature().getName()
-        + ". Time taken for Execution is : " + (endtime - startTime) + "ms");
+        + ". Time taken for Execution is : " + (endTime - startTime) + "ms");
     return object;
   }
 }

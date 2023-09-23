@@ -66,11 +66,10 @@ class HeroControllerTest {
     credentialsProvider.setCredentials(AuthScope.ANY,
         new UsernamePasswordCredentials(USER_DATA, PWD_DATA));
 
-    final HttpClient client = HttpClientBuilder
+      return HttpClientBuilder
         .create()
         .setDefaultCredentialsProvider(credentialsProvider)
         .build();
-    return client;
   }
 
   @BeforeEach
@@ -113,9 +112,10 @@ class HeroControllerTest {
   @Test
   void updatesAHero() {
     final Hero hero = restTemplate.getForObject(baseUrl.concat(ID_ENDPOINT), Hero.class, 1);
-    hero.setName(ONE_HERO_NAME);
+    assertNotNull(hero);
+      hero.setName(ONE_HERO_NAME);
     final HttpEntity<Hero> entity = new HttpEntity<Hero>(hero);
-    final ResponseEntity heroResponse = restTemplate.exchange(baseUrl, HttpMethod.PUT, entity, Hero.class);
+    final ResponseEntity<Hero> heroResponse = restTemplate.exchange(baseUrl, HttpMethod.PUT, entity, Hero.class);
     final Hero heroUpdated = (Hero) heroResponse.getBody();
     assertAll(
         () -> assertNotNull(heroUpdated),

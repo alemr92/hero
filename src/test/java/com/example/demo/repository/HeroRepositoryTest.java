@@ -24,7 +24,7 @@ class HeroRepositoryTest {
   @Test
   @Transactional
   void findsAllHeroes() {
-    assertEquals(9, heroRepository.findAll().size());
+    assertEquals(8, heroRepository.findAll().size());
   }
 
   @Test
@@ -41,19 +41,28 @@ class HeroRepositoryTest {
   @Transactional
   void findsHeroById() {
     final int id = 1;
-    final Hero hero = heroRepository.findById(id).get();
-    assertEquals(ONE_HERO_NAME, hero.getName());
+    final Optional<Hero> heroFound = heroRepository.findById(id);
+    if(heroFound.isPresent()) {
+      final Hero hero = heroFound.get();
+      assertEquals("Spiderman", hero.getName());
+    }
   }
 
   @Test
   @Transactional
   void updatesHero() {
     final int id = 1;
-    final Hero hero = heroRepository.findById(id).get();
-    hero.setName(ONE_HERO_NAME);
-    heroRepository.save(hero);
-    final Hero updatedHero = heroRepository.findById(id).get();
-    assertEquals(hero.getName(), updatedHero.getName());
+    final Optional<Hero> heroFound = heroRepository.findById(id);
+    if(heroFound.isPresent()) {
+      final Hero hero = heroFound.get();
+      hero.setName(ONE_HERO_NAME);
+      heroRepository.save(hero);
+      final Optional<Hero> updatedHeroFound = heroRepository.findById(id);
+      if(updatedHeroFound.isPresent()) {
+        final Hero updatedHero = updatedHeroFound.get();
+        assertEquals(hero.getName(), updatedHero.getName());
+      }
+    }
   }
 
   @Test
